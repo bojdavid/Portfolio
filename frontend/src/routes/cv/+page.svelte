@@ -1,10 +1,10 @@
 <script lang="ts">
-  import CvSheet from '$lib/components/cv/CvSheet.svelte';
-  import { toast } from '$lib/stores/toast';
-  import { Download, Printer } from 'lucide-svelte';
+  import CvSheet from "$lib/components/cv/CvSheet.svelte";
+  import { toast } from "$lib/stores/toast";
+  import { Download, Printer } from "lucide-svelte";
 
   function handlePrint() {
-    toast.info('Preparing document for print / PDF export...');
+    toast.info("Preparing document for print / PDF export...");
     setTimeout(() => {
       window.print();
     }, 400);
@@ -13,12 +13,17 @@
 
 <svelte:head>
   <title>Curriculum Vitae | Alex Rivers</title>
-  <meta name="description" content="Official Curriculum Vitae of Alex Rivers, Senior Full-Stack Systems Engineer." />
+  <meta
+    name="description"
+    content="Official Curriculum Vitae of Alex Rivers, Senior Full-Stack Systems Engineer."
+  />
 </svelte:head>
 
 <div class="flex flex-col gap-6 animate-in fade-in duration-300">
   <!-- Toolbar -->
-  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-lg bg-surface-subtle border border-border no-print">
+  <div
+    class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-lg bg-surface-subtle border border-border no-print"
+  >
     <div class="font-mono text-xs text-text-muted flex items-center gap-2">
       <span class="text-primary font-bold">//</span>
       <span>FORMAT: DOCUMENT_PRINT_PDF</span>

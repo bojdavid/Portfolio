@@ -1,28 +1,35 @@
 <script lang="ts">
-  import { page } from '$app/state';
-  import { profileData } from '$lib/data/profile';
-  import { Menu, X, FileDown } from 'lucide-svelte';
+  import { page } from "$app/state";
+  import { profileData } from "$lib/data/profile";
+  import { Menu, X, FileDown } from "lucide-svelte";
 
   let mobileMenuOpen = $state(false);
 
   const navLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/about', label: 'About' },
-    { href: '/projects', label: 'Projects' }
+    { href: "/", label: "Home" },
+    { href: "/about", label: "About" },
+    { href: "/projects", label: "Projects" },
   ];
 
   function isActive(href: string) {
-    if (href === '/') return page.url.pathname === '/';
+    if (href === "/") return page.url.pathname === "/";
     return page.url.pathname.startsWith(href);
   }
 </script>
 
-<header class="sticky top-0 z-40 w-full border-b border-border/80 bg-background/80 backdrop-blur-md">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+<header
+  class="sticky top-0 z-40 w-full border-b border-border/80 bg-background/80 backdrop-blur-md"
+>
+  <div
+    class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
+  >
     <!-- Brand Logo -->
     <a href="/" class="flex items-center gap-1 group">
       <span class="font-mono text-primary font-bold text-base">&lt;</span>
-      <span class="font-sans font-extrabold text-lg text-text group-hover:text-primary transition-colors tracking-tight">{profileData.handle}</span>
+      <span
+        class="font-sans font-extrabold text-lg text-text group-hover:text-primary transition-colors tracking-tight"
+        >{profileData.handle}</span
+      >
       <span class="font-mono text-primary font-bold text-base">/&gt;</span>
     </a>
 
@@ -31,7 +38,9 @@
       {#each navLinks as link}
         <a
           href={link.href}
-          class="text-sm font-medium transition-colors {isActive(link.href) ? 'text-primary font-semibold' : 'text-text-muted hover:text-text'}"
+          class="text-sm font-medium transition-colors {isActive(link.href)
+            ? 'text-primary font-semibold'
+            : 'text-text-muted hover:text-text'}"
         >
           {link.label}
         </a>
@@ -68,13 +77,19 @@
 
   <!-- Mobile Dropdown -->
   {#if mobileMenuOpen}
-    <div class="md:hidden border-b border-border bg-surface-subtle px-4 pt-3 pb-5 space-y-3 animate-in fade-in slide-in-from-top-2">
+    <div
+      class="md:hidden border-b border-border bg-surface-subtle px-4 pt-3 pb-5 space-y-3 animate-in fade-in slide-in-from-top-2"
+    >
       <nav class="flex flex-col space-y-2">
         {#each navLinks as link}
           <a
             href={link.href}
             onclick={() => (mobileMenuOpen = false)}
-            class="px-3 py-2 rounded-md text-sm font-medium transition-colors {isActive(link.href) ? 'bg-surface text-primary border border-border' : 'text-text-muted hover:text-text'}"
+            class="px-3 py-2 rounded-md text-sm font-medium transition-colors {isActive(
+              link.href,
+            )
+              ? 'bg-surface text-primary border border-border'
+              : 'text-text-muted hover:text-text'}"
           >
             {link.label}
           </a>

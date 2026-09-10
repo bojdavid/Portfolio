@@ -1,8 +1,8 @@
 <script lang="ts">
-  import AboutBioSection from '$lib/components/about/AboutBioSection.svelte';
-  import CareerTimelineSection from '$lib/components/about/CareerTimelineSection.svelte';
-  import InterestsSection from '$lib/components/about/InterestsSection.svelte';
-  import ContactCtaSection from '$lib/components/about/ContactCtaSection.svelte';
+  import AboutBioSection from "$lib/components/about/AboutBioSection.svelte";
+  import CareerTimelineSection from "$lib/components/about/CareerTimelineSection.svelte";
+  import InterestsSection from "$lib/components/about/InterestsSection.svelte";
+  import ContactCtaSection from "$lib/components/about/ContactCtaSection.svelte";
 </script>
 
 <svelte:head>

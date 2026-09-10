@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { projectsData } from '$lib/data/projects';
-  import ProjectCard from '$lib/components/projects/ProjectCard.svelte';
+  import { projectsData } from "$lib/data/projects";
+  import ProjectCard from "$lib/components/projects/ProjectCard.svelte";
 </script>
 
 <svelte:head>
@@ -17,11 +17,15 @@
     <span class="font-mono text-xs text-primary font-semibold tracking-wide">
       // THE REPOSITORY
     </span>
-    <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-text tracking-tight">
+    <h1
+      class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-text tracking-tight"
+    >
       Selected Work
     </h1>
     <p class="text-base sm:text-lg text-text-muted max-w-2xl leading-relaxed">
-      A curated list of applications, distributed platforms, and developer tooling I have engineered, tested, and shipped. Click into detail views to inspect the architectures.
+      A curated list of applications, distributed platforms, and developer
+      tooling I have engineered, tested, and shipped. Click into detail views to
+      inspect the architectures.
     </p>
   </div>
 

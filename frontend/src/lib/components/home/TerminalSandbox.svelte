@@ -1,55 +1,126 @@
 <script lang="ts">
-  import { terminalDefaultOutputs } from '$lib/data/skills';
-  import { profileData } from '$lib/data/profile';
-  import { Terminal, CornerDownLeft } from 'lucide-svelte';
+  import { onMount, onDestroy } from "svelte";
+  import { fade } from "svelte/transition";
+  import { CornerDownLeft } from "lucide-svelte";
+  import {
+    automatedSequence,
+    executeCommand,
+    getRandomTypingSpeed,
+    type HistoryEntry,
+  } from "$lib/utils/terminal";
+  import TerminalHeader from "./TerminalHeader.svelte";
+  import TerminalHistoryItem from "./TerminalHistoryItem.svelte";
 
-  interface HistoryEntry {
-    cmd: string;
-    output: string;
+  let history = $state<HistoryEntry[]>([]);
+  let currentTypingCmd = $state("");
+  let isPaused = $state(false);
+  let commandInput = $state("");
+  let terminalBox = $state<HTMLDivElement | null>(null);
+  let innerContentHeight = $state(140);
+
+  let calculatedHeight = $derived(
+    innerContentHeight
+      ? Math.min(Math.max(innerContentHeight + 40, 130), 380)
+      : 180,
+  );
+
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
+  let seqIndex = 0;
+  let charIndex = 0;
+  let isDestroyed = false;
+
+  function scrollToBottom() {
+    if (terminalBox) terminalBox.scrollTop = terminalBox.scrollHeight;
   }
 
-  let commandInput = $state('');
-  let history = $state<HistoryEntry[]>([
-    {
-      cmd: 'curl -s https://api.bojdavid.dev/skills/highlights',
-      output: terminalDefaultOutputs['curl -s https://api.bojdavid.dev/skills/highlights']
-    },
-    {
-      cmd: 'node --version',
-      output: 'v22.14.0'
+  function scheduleNext(delay: number, fn: () => void) {
+    if (isDestroyed) return;
+    timeoutId = setTimeout(() => {
+      if (!isPaused && !isDestroyed) fn();
+    }, delay);
+  }
+
+  function stepTyping() {
+    if (isPaused || isDestroyed) return;
+
+    if (seqIndex >= automatedSequence.length) {
+      scheduleNext(3200, typeClearAndRestart);
+      return;
     }
-  ]);
+
+    const target = automatedSequence[seqIndex];
+
+    if (charIndex < target.cmd.length) {
+      currentTypingCmd = target.cmd.slice(0, charIndex + 1);
+      charIndex++;
+      scrollToBottom();
+      scheduleNext(getRandomTypingSpeed(), stepTyping);
+    } else {
+      scheduleNext(300, () => {
+        history = [...history, { cmd: target.cmd, output: target.output }];
+        currentTypingCmd = "";
+        charIndex = 0;
+        seqIndex++;
+        scrollToBottom();
+        scheduleNext(1300, stepTyping);
+      });
+    }
+  }
+
+  function typeClearAndRestart() {
+    if (isPaused || isDestroyed) return;
+    const clearCmd = "clear";
+    let cIdx = 0;
+
+    function typeClearChar() {
+      if (isPaused || isDestroyed) return;
+      if (cIdx < clearCmd.length) {
+        currentTypingCmd = clearCmd.slice(0, cIdx + 1);
+        cIdx++;
+        scrollToBottom();
+        scheduleNext(65, typeClearChar);
+      } else {
+        scheduleNext(400, () => {
+          history = [];
+          currentTypingCmd = "";
+          seqIndex = 0;
+          charIndex = 0;
+          scheduleNext(850, stepTyping);
+        });
+      }
+    }
+    typeClearChar();
+  }
+
+  function togglePause() {
+    isPaused = !isPaused;
+    if (!isPaused) stepTyping();
+    else if (timeoutId) clearTimeout(timeoutId);
+  }
+
+  onMount(() => {
+    scheduleNext(400, stepTyping);
+  });
+
+  onDestroy(() => {
+    isDestroyed = true;
+    if (timeoutId) clearTimeout(timeoutId);
+  });
 
   function handleCommandSubmit(e: SubmitEvent) {
     e.preventDefault();
     const raw = commandInput.trim();
     if (!raw) return;
 
-    if (raw.toLowerCase() === 'clear') {
+    const result = executeCommand(raw);
+    if (result.isClear) {
       history = [];
-      commandInput = '';
-      return;
-    }
-
-    let output = '';
-    const lower = raw.toLowerCase();
-
-    if (lower === 'help') {
-      output = 'Available commands: help, highlights, node --version, whoami, projects, clear';
-    } else if (lower === 'highlights' || lower.includes('highlights')) {
-      output = terminalDefaultOutputs['curl -s https://api.bojdavid.dev/skills/highlights'];
-    } else if (lower.includes('node')) {
-      output = 'v22.14.0';
-    } else if (lower === 'whoami') {
-      output = `${profileData.handle.split('.')[0]} (${profileData.name} - ${profileData.role} @ ${profileData.location})`;
-    } else if (lower === 'projects') {
-      output = 'AetherDb Engine, SpectraFlow, CargoSync API, NetGage CLI, Helix Auth, Pillar UI Kit';
     } else {
-      output = `command not found: ${raw}. Type 'help' for available commands.`;
+      history = [...history, { cmd: raw, output: result.output }];
     }
 
-    history = [...history, { cmd: raw, output }];
-    commandInput = '';
+    commandInput = "";
+    setTimeout(scrollToBottom, 50);
   }
 </script>
 
@@ -63,51 +134,67 @@
     </h2>
   </div>
 
-  <div class="rounded-lg bg-surface border border-border shadow-2xl overflow-hidden">
+  <div
+    class="rounded-lg bg-surface border border-border shadow-2xl overflow-hidden group hover:border-primary/40 transition-colors duration-300"
+  >
     <!-- Window Bar -->
-    <div class="flex items-center justify-between px-4 py-2.5 bg-surface-subtle border-b border-border text-xs font-mono text-text-subtle">
-      <div class="flex items-center gap-2">
-        <span class="w-3 h-3 rounded-full bg-error/70 inline-block"></span>
-        <span class="w-3 h-3 rounded-full bg-warning/70 inline-block"></span>
-        <span class="w-3 h-3 rounded-full bg-success/70 inline-block"></span>
-      </div>
-      <div class="flex items-center gap-1.5 font-medium text-text-muted">
-        <Terminal class="w-3.5 h-3.5 text-primary" />
-        <span>bash — boj@lagos: ~/sandbox</span>
-      </div>
-      <div class="w-8"></div>
-    </div>
+    <TerminalHeader {isPaused} onTogglePause={togglePause} />
 
-    <!-- Terminal Content -->
-    <div class="p-4 sm:p-6 font-mono text-xs sm:text-sm space-y-4 max-h-[380px] overflow-y-auto bg-background/90">
-      {#each history as item}
-        <div class="space-y-1.5">
-          <div class="flex items-center gap-2 text-text">
-            <span class="text-primary font-bold">$</span>
-            <span>{item.cmd}</span>
-          </div>
-          <pre class="text-text-muted whitespace-pre-wrap pl-4 font-mono leading-relaxed border-l border-border/60">{item.output}</pre>
-        </div>
-      {/each}
-
-      <!-- Interactive Input -->
-      <form onsubmit={handleCommandSubmit} class="flex items-center gap-2 pt-1">
-        <span class="text-primary font-bold">$</span>
-        <input
-          type="text"
-          bind:value={commandInput}
-          placeholder="type 'help' or any command..."
-          class="flex-1 bg-transparent text-text outline-none font-mono text-xs sm:text-sm placeholder:text-text-subtle/50"
-          aria-label="Terminal command input"
-        />
-        <button
-          type="submit"
-          class="p-1 text-text-subtle hover:text-primary transition-colors"
-          aria-label="Run command"
+    <!-- Terminal Outer Animated Wrapper with smooth height transition -->
+    <div
+      class="overflow-hidden transition-[height] duration-700 ease-in-out bg-background/90"
+      style="height: {calculatedHeight}px;"
+    >
+      <!-- Scrollable Inner Terminal Content -->
+      <div
+        bind:this={terminalBox}
+        class="h-full overflow-y-auto scroll-smooth p-4 sm:p-6"
+      >
+        <div
+          bind:clientHeight={innerContentHeight}
+          class="space-y-4 font-mono text-xs sm:text-sm"
         >
-          <CornerDownLeft class="w-3.5 h-3.5" />
-        </button>
-      </form>
+          {#each history as item, i (item.cmd + i)}
+            <TerminalHistoryItem {item} />
+          {/each}
+
+          <!-- Animated Typing Command Line -->
+          {#if currentTypingCmd}
+            <div
+              in:fade={{ duration: 100 }}
+              class="flex items-center gap-2 text-text"
+            >
+              <span class="text-primary font-bold select-none">$</span>
+              <span>{currentTypingCmd}</span>
+              <span
+                class="w-2 h-4 bg-primary inline-block animate-pulse align-middle"
+              ></span>
+            </div>
+          {/if}
+
+          <!-- Interactive User Input -->
+          <form
+            onsubmit={handleCommandSubmit}
+            class="flex items-center gap-2 pt-1 border-t border-border/40"
+          >
+            <span class="text-primary font-bold select-none">$</span>
+            <input
+              type="text"
+              bind:value={commandInput}
+              placeholder="type 'help' or any command..."
+              class="flex-1 bg-transparent text-text outline-none font-mono text-xs sm:text-sm placeholder:text-text-subtle/50"
+              aria-label="Terminal command input"
+            />
+            <button
+              type="submit"
+              class="p-1 text-text-subtle hover:text-primary transition-colors cursor-pointer"
+              aria-label="Run command"
+            >
+              <CornerDownLeft class="w-3.5 h-3.5" />
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 </section>

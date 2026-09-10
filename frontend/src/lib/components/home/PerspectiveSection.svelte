@@ -1,11 +1,15 @@
 <script lang="ts">
   import { profileData } from '$lib/data/profile';
   import { Quote } from 'lucide-svelte';
+  import { fly } from 'svelte/transition';
 </script>
 
 <section class="py-8 border-t border-border/80">
-  <div class="p-6 sm:p-8 rounded-lg bg-surface-subtle border border-border relative overflow-hidden group">
-    <div class="absolute -right-6 -bottom-6 text-border/20 pointer-events-none select-none">
+  <div
+    in:fly={{ y: 16, duration: 350, delay: 200 }}
+    class="p-6 sm:p-8 rounded-lg bg-surface-subtle border border-border relative overflow-hidden group hover:border-accent/50 hover:shadow-xl hover:shadow-accent/5 transition-all duration-300"
+  >
+    <div class="absolute -right-6 -bottom-6 text-border/20 group-hover:text-accent/15 transition-all duration-500 pointer-events-none select-none group-hover:scale-110 group-hover:rotate-6">
       <Quote class="w-32 h-32" />
     </div>
     

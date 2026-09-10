@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { ArrowLeft } from 'lucide-svelte';
-  import ProjectCodeBlock from '$lib/components/projects/ProjectCodeBlock.svelte';
-  import ProjectSidebar from '$lib/components/projects/ProjectSidebar.svelte';
-  import type { PageData } from './$types';
+  import { ArrowLeft } from "lucide-svelte";
+  import ProjectCodeBlock from "$lib/components/projects/ProjectCodeBlock.svelte";
+  import ProjectSidebar from "$lib/components/projects/ProjectSidebar.svelte";
+  import type { PageData } from "./$types";
 
   let { data }: { data: PageData } = $props();
   let project = $derived(data.project);
@@ -27,12 +27,16 @@
 
   <!-- Detail Header -->
   <div class="space-y-3 border-b border-border pb-8">
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface border border-border text-xs font-mono">
+    <div
+      class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface border border-border text-xs font-mono"
+    >
       <span class="w-2 h-2 rounded-full bg-primary"></span>
       <span class="text-primary font-bold">{project.status}</span>
     </div>
 
-    <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-text tracking-tight">
+    <h1
+      class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-text tracking-tight"
+    >
       {project.title}
     </h1>
 
@@ -58,7 +62,9 @@
       <!-- Inspiration & Origin -->
       {#if project.inspiration}
         <section class="space-y-4 border-t border-border pt-8">
-          <h2 class="text-xl sm:text-2xl font-bold text-text">Inspiration & Origin</h2>
+          <h2 class="text-xl sm:text-2xl font-bold text-text">
+            Inspiration & Origin
+          </h2>
           <p class="text-base text-text-muted leading-relaxed">
             {project.inspiration}
           </p>
@@ -75,7 +81,9 @@
     </div>
 
     <!-- Right Column: Sidebar Specs -->
-    <div class="lg:col-span-1 border-t lg:border-t-0 lg:border-l border-border pt-8 lg:pt-0 lg:pl-10">
+    <div
+      class="lg:col-span-1 border-t lg:border-t-0 lg:border-l border-border pt-8 lg:pt-0 lg:pl-10"
+    >
       <ProjectSidebar {project} />
     </div>
   </div>
