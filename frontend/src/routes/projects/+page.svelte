@@ -1,14 +1,12 @@
 <script lang="ts">
   import { projectsData } from "$lib/data/projects";
   import ProjectCard from "$lib/components/projects/ProjectCard.svelte";
+  import { profileData } from "$lib/data/profile";
 </script>
 
 <svelte:head>
-  <title>Projects | Alex Rivers</title>
-  <meta
-    name="description"
-    content="A curated list of applications, distributed platforms, and developer tooling engineered by Alex Rivers."
-  />
+  <title>Projects | {profileData.name}</title>
+  <meta name="description" content={profileData.pages.projects.description} />
 </svelte:head>
 
 <div class="flex flex-col gap-8 animate-in fade-in duration-300">

@@ -2,6 +2,7 @@
   import { expertiseAreas } from '$lib/data/skills';
   import { Layout, Server, Cloud, Smartphone } from 'lucide-svelte';
   import { fly } from 'svelte/transition';
+  import { TRANSITION } from '$lib/constants/motion';
 
   const iconMap = {
     Layout,
@@ -12,7 +13,7 @@
 </script>
 
 <section class="flex flex-col gap-6 py-8 border-t border-border/80">
-  <div class="space-y-1">
+  <div in:fly={TRANSITION.header} class="space-y-1">
     <span class="font-mono text-xs text-primary font-semibold tracking-wide">
       // EXPERTISE
     </span>
@@ -25,7 +26,7 @@
     {#each expertiseAreas as item, i}
       {@const IconComponent = iconMap[item.iconName as keyof typeof iconMap] || Server}
       <div
-        in:fly={{ y: 16, duration: 350, delay: 100 + i * 80 }}
+        in:fly={TRANSITION.card(i)}
         class="flex flex-col gap-3 p-5 sm:p-6 rounded-lg bg-surface border border-border hover:border-primary/60 hover:bg-surface-elevated hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 group cursor-default"
       >
         <div class="flex items-center gap-3">

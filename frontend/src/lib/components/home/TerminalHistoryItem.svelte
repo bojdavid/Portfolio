@@ -1,11 +1,12 @@
 <script lang="ts">
   import type { HistoryEntry } from '$lib/utils/terminal';
   import { fly, fade } from 'svelte/transition';
+  import { TRANSITION } from '$lib/constants/motion';
 
   let { item }: { item: HistoryEntry } = $props();
 </script>
 
-<div in:fly={{ y: 8, duration: 200 }} out:fade={{ duration: 250 }} class="space-y-1.5">
+<div in:fly={TRANSITION.terminalEntry} out:fade={TRANSITION.terminalExit} class="space-y-1.5">
   <div class="flex items-center gap-2 text-text">
     <span class="text-primary font-bold select-none">$</span>
     <span>{item.cmd}</span>

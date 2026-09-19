@@ -1,5 +1,6 @@
 <script lang="ts">
   import { toast } from '$lib/stores/toast';
+  import { TIMING } from '$lib/constants/motion';
   import { Terminal, Copy, Check } from 'lucide-svelte';
 
   let { commands }: { commands: { comment: string; cmd: string }[] } = $props();
@@ -12,7 +13,7 @@
     toast.success('Run commands copied to clipboard!');
     setTimeout(() => {
       copied = false;
-    }, 2000);
+    }, TIMING.toastNotice);
   }
 </script>
 

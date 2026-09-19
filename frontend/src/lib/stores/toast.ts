@@ -1,4 +1,5 @@
 import { writable } from 'svelte/store';
+import { TIMING } from '$lib/constants/motion';
 
 export interface ToastItem {
   id: string;
@@ -10,7 +11,11 @@ export interface ToastItem {
 function createToastStore() {
   const { subscribe, update } = writable<ToastItem[]>([]);
 
-  function show(message: string, type: 'success' | 'info' | 'error' = 'success', duration = 3000) {
+  function show(
+    message: string,
+    type: 'success' | 'info' | 'error' = 'success',
+    duration: number = TIMING.toastTimeout
+  ) {
     const id = Math.random().toString(36).substring(2, 9);
     const item: ToastItem = { id, message, type, duration };
 

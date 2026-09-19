@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { profileData } from "$lib/data/profile";
   import AboutBioSection from "$lib/components/about/AboutBioSection.svelte";
   import CareerTimelineSection from "$lib/components/about/CareerTimelineSection.svelte";
   import InterestsSection from "$lib/components/about/InterestsSection.svelte";
@@ -6,10 +7,10 @@
 </script>
 
 <svelte:head>
-  <title>About | Alex Rivers</title>
+  <title>{profileData.pages.about.title}</title>
   <meta
     name="description"
-    content="Background, career timeline, and interests of Alex Rivers, Senior Full-Stack Systems Engineer."
+    content="{profileData.pages.about.description}"
   />
 </svelte:head>
 

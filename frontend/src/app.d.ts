@@ -10,4 +10,9 @@ declare global {
 	}
 }
 
+declare module '*.pdf' {
+	const content: string;
+	export default content;
+}
+
 export {};

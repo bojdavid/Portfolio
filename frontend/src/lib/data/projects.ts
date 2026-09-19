@@ -198,6 +198,45 @@ export const projectsData: Project[] = [
       { name: 'Tailwind CSS', role: 'Design system & styling' }
     ]
   },
+  {
+    id: 'ui-judo-outreach-attendance',
+    slug: 'ui-judo-outreach-attendance',
+    title: 'UI Judo Outreach & Attendance System',
+    status: 'Active / Ongoing',
+    timeline: 'Sep 2026 - Present',
+    tagline: 'A full-stack attendance and retention platform for the University of Ibadan Judo Club, using Google Sheets as a zero-cost database to flag inactive judokas before they drop out.',
+    tags: ['React', 'NestJS', 'Google Sheets API', 'OAuth 2.0', 'TypeScript'],
+    featured: false,
+    overview: [
+      'The UI Judo Outreach & Attendance System is a centralized operational hub for managing dojo memberships, recording live mat attendance, and running a proactive outreach workflow that combats member attrition.',
+      'Rather than paying for database hosting, the system uses Google Sheets as its persistent store via a Google Cloud Service Account, so club executives can audit and export data directly in spreadsheet format. The backend analyzes training history to tier judokas by inactivity (14, 30, 60, and 90+ days) and generates a prioritized outreach queue with contact details and follow-up logging.',
+      'Access is gated by Google OAuth 2.0 SSO against a whitelist sheet, with granular role-based access control separating coaches and captains from outreach-only "reacher" accounts, enforced at both the API boundary and the UI layer.'
+    ],
+    inspiration:
+      'I noticed that some of our members had quietly stopped showing up for training, and because no attendance records were being kept, we often only realized months later when it was too late to bring them back. I built this system so the club could spot drop-off early and actually reach out to people while they were still reachable.',
+    runCommands: [
+      { comment: '# Clone repository', cmd: 'git clone https://github.com/unibadanjudo/outreach-and-attendance-system.git && cd outreach-and-attendance-system' },
+      { comment: '# Install backend dependencies', cmd: 'cd backend && npm install' },
+      { comment: '# Configure backend environment variables in backend/.env', cmd: 'PORT=3000\nNODE_ENV=development\nFRONTEND_URL=http://localhost:5173\nCLUB_TIMEZONE=Africa/Lagos\n\nGOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com\nGOOGLE_CLIENT_SECRET=your-google-client-secret\nGOOGLE_CALLBACK_URL=http://localhost:3000/api/auth/google/callback\n\nGOOGLE_SHEETS_SPREADSHEET_ID=your-google-spreadsheet-id\nGOOGLE_SHEETS_MEMBERS_RANGE=Members!A:Z\nGOOGLE_SHEETS_ATTENDANCE_RANGE=Attendance!A:Z\nGOOGLE_SHEETS_OUTREACH_RANGE=Outreach!A:Z\nGOOGLE_SHEETS_ALLOWED_USERS_RANGE=AllowedUsers!A:F\n\nGOOGLE_SERVICE_ACCOUNT_EMAIL=service-account@project.iam.gserviceaccount.com\nGOOGLE_PRIVATE_KEY="your-service-account-private-key"\n\nACTIVE_DAYS=14\nRECENTLY_INACTIVE_DAYS=30\nINACTIVE_DAYS=60\nLONG_TERM_INACTIVE_DAYS=90\n\nSESSION_SECRET=a-secure-random-string-at-least-32-characters-long' },
+      { comment: '# Start the backend in dev mode', cmd: 'npm run start:dev' },
+      { comment: '# In a new terminal, install frontend dependencies', cmd: 'cd ../frontend && npm install' },
+      { comment: '# Configure frontend/.env.development', cmd: 'VITE_API_BASE_URL=http://localhost:3000/api' },
+      { comment: '# Start the frontend dev server', cmd: 'npm run dev' }
+    ],
+    resourceLinks: [
+      { label: 'Open Repository', url: 'https://github.com/unibadanjudo/outreach-and-attendance-system', type: 'repo' },
+      { label: 'Interactive API Docs (Swagger)', url: 'https://outreach-and-attendance-system.onrender.com/api/docs', type: 'doc', note: '* The web app itself is restricted to authorized club executives' }
+    ],
+    techStack: [
+      { name: 'React 19 + Vite', role: 'Frontend UI framework' },
+      { name: 'NestJS 11', role: 'Layered backend API' },
+      { name: 'Google Sheets API v4', role: 'Zero-cost persistent data layer' },
+      { name: 'Passport.js / Google OAuth 2.0', role: 'SSO authentication & session handling' },
+      { name: 'TanStack React Query', role: 'Server state & caching' },
+      { name: 'Recharts', role: 'Dashboard analytics & charts' },
+      { name: 'Tailwind CSS', role: 'Design tokens & styling' }
+    ]
+  },
   /*
   {
     id: 'aetherdb',

@@ -2,6 +2,7 @@
   import { onMount, onDestroy } from "svelte";
   import { fade } from "svelte/transition";
   import { CornerDownLeft } from "lucide-svelte";
+  import { TIMING, DELAY } from "$lib/constants/motion";
   import {
     automatedSequence,
     executeCommand,
@@ -48,48 +49,53 @@
       return;
     }
 
-    const target = automatedSequence[seqIndex];
-
-    if (charIndex < target.cmd.length) {
-      currentTypingCmd = target.cmd.slice(0, charIndex + 1);
+    const currentItem = automatedSequence[seqIndex];
+    if (charIndex < currentItem.cmd.length) {
+      currentTypingCmd = currentItem.cmd.slice(0, charIndex + 1);
       charIndex++;
       scrollToBottom();
       scheduleNext(getRandomTypingSpeed(), stepTyping);
     } else {
-      scheduleNext(300, () => {
-        history = [...history, { cmd: target.cmd, output: target.output }];
-        currentTypingCmd = "";
-        charIndex = 0;
-        seqIndex++;
-        scrollToBottom();
-        scheduleNext(1300, stepTyping);
-      });
+      scheduleNext(600, executeAutomated);
+    }
+  }
+
+  function executeAutomated() {
+    if (isPaused || isDestroyed) return;
+
+    const currentItem = automatedSequence[seqIndex];
+    const result = executeCommand(currentItem.cmd);
+
+    if (result.isClear) {
+      history = [];
+    } else {
+      history = [...history, { cmd: currentItem.cmd, output: result.output }];
+    }
+
+    currentTypingCmd = "";
+    charIndex = 0;
+    seqIndex++;
+    scrollToBottom();
+
+    if (seqIndex < automatedSequence.length) {
+      scheduleNext(1400, stepTyping);
+    } else {
+      scheduleNext(3200, typeClearAndRestart);
     }
   }
 
   function typeClearAndRestart() {
     if (isPaused || isDestroyed) return;
-    const clearCmd = "clear";
-    let cIdx = 0;
-
-    function typeClearChar() {
-      if (isPaused || isDestroyed) return;
-      if (cIdx < clearCmd.length) {
-        currentTypingCmd = clearCmd.slice(0, cIdx + 1);
-        cIdx++;
-        scrollToBottom();
-        scheduleNext(65, typeClearChar);
-      } else {
-        scheduleNext(400, () => {
-          history = [];
-          currentTypingCmd = "";
-          seqIndex = 0;
-          charIndex = 0;
-          scheduleNext(850, stepTyping);
-        });
-      }
-    }
-    typeClearChar();
+    currentTypingCmd = "clear";
+    scrollToBottom();
+    scheduleNext(700, () => {
+      history = [];
+      currentTypingCmd = "";
+      seqIndex = 0;
+      charIndex = 0;
+      scrollToBottom();
+      scheduleNext(1200, stepTyping);
+    });
   }
 
   function togglePause() {
@@ -99,7 +105,7 @@
   }
 
   onMount(() => {
-    scheduleNext(400, stepTyping);
+    scheduleNext(1000, stepTyping);
   });
 
   onDestroy(() => {
@@ -120,7 +126,7 @@
     }
 
     commandInput = "";
-    setTimeout(scrollToBottom, 50);
+    setTimeout(scrollToBottom, DELAY.short);
   }
 </script>
 
@@ -161,7 +167,7 @@
           <!-- Animated Typing Command Line -->
           {#if currentTypingCmd}
             <div
-              in:fade={{ duration: 100 }}
+              in:fade={{ duration: TIMING.instant }}
               class="flex items-center gap-2 text-text"
             >
               <span class="text-primary font-bold select-none">$</span>

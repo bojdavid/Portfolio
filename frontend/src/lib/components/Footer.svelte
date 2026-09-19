@@ -12,7 +12,7 @@
   }
 </script>
 
-<footer class="w-full border-t border-border bg-background py-10 px-4 sm:px-6 lg:px-8 mt-auto">
+<footer class="w-full border-t border-border/80 bg-background/80 backdrop-blur-md py-10 px-4 sm:px-6 lg:px-8 mt-auto">
   <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
     <!-- Footer Left -->
     <div class="flex flex-col items-center md:items-start gap-1 text-center md:text-left">

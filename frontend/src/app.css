@@ -4,12 +4,19 @@
 :root {
   /* Colors */
   --color-background: #080B10;
-  --color-surface: #111622;
-  --color-surface-subtle: #0C0F17;
-  --color-surface-elevated: #161D2C;
+  --color-surface: rgba(17, 22, 34, 0.70);
+  --color-surface-subtle: rgba(12, 15, 23, 0.60);
+  --color-surface-elevated: rgba(22, 29, 44, 0.82);
   --color-border: #1F293D;
   --color-border-subtle: rgba(31, 41, 61, 0.6);
   --color-border-glow: rgba(57, 255, 20, 0.25);
+
+  /* Glassmorphism Tokens */
+  --glass-blur-sm: 8px;
+  --glass-blur-md: 14px;
+  --glass-blur-lg: 20px;
+  --glass-border: rgba(255, 255, 255, 0.07);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 
   --color-primary: #39FF14;
   --color-primary-glow: rgba(57, 255, 20, 0.12);
@@ -62,6 +69,22 @@
   --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
   --shadow-primary-glow: 0 0 25px -4px rgba(57, 255, 20, 0.35);
   --shadow-accent-glow: 0 0 25px -4px rgba(0, 240, 255, 0.35);
+
+  /* Centralized Motion & Transition Tokens */
+  --duration-fast: 200ms;
+  --duration-normal: 300ms;
+  --duration-card: 350ms;
+  --duration-relaxed: 400ms;
+  --duration-slow: 500ms;
+  --duration-height: 700ms;
+
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --transition-fast: var(--duration-fast) var(--ease-default);
+  --transition-normal: var(--duration-normal) var(--ease-default);
+  --transition-slow: var(--duration-slow) var(--ease-default);
 }
 
 @theme {
@@ -116,8 +139,27 @@ body {
   min-height: 100vh;
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Glassmorphism Surface Layers */
+.bg-surface {
+  background-color: var(--color-surface);
+  backdrop-filter: blur(var(--glass-blur-md));
+  -webkit-backdrop-filter: blur(var(--glass-blur-md));
+}
+
+.bg-surface-subtle {
+  background-color: var(--color-surface-subtle);
+  backdrop-filter: blur(var(--glass-blur-md));
+  -webkit-backdrop-filter: blur(var(--glass-blur-md));
+}
+
+.bg-surface-elevated {
+  background-color: var(--color-surface-elevated);
+  backdrop-filter: blur(var(--glass-blur-lg));
+  -webkit-backdrop-filter: blur(var(--glass-blur-lg));
 }
 
 /* Custom terminal scrollbars */

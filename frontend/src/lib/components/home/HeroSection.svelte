@@ -1,13 +1,7 @@
 <script lang="ts">
   import { profileData } from "$lib/data/profile";
-  import { toast } from "$lib/stores/toast";
   import { ArrowRight, Mail, Sparkles } from "lucide-svelte";
   import bojImg from "$lib/assets/boj.png";
-
-  function copyEmail() {
-    navigator.clipboard.writeText(profileData.email);
-    toast.success("Email copied to clipboard: " + profileData.email);
-  }
 </script>
 
 <section
@@ -60,14 +54,13 @@
         <span>Inspect Projects</span>
         <ArrowRight class="w-4 h-4" />
       </a>
-      <button
-        type="button"
-        onclick={copyEmail}
-        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-surface border border-border font-mono font-semibold text-sm text-text hover:border-primary hover:text-primary transition-all duration-200 cursor-pointer"
+      <a
+        href="/contact"
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-surface border border-border font-mono font-semibold text-sm text-text hover:border-primary hover:text-primary hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
       >
         <Mail class="w-4 h-4 text-primary" />
         <span>Get in Touch</span>
-      </button>
+      </a>
     </div>
   </div>
 

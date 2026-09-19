@@ -3,13 +3,14 @@
   import ProjectCodeBlock from "$lib/components/projects/ProjectCodeBlock.svelte";
   import ProjectSidebar from "$lib/components/projects/ProjectSidebar.svelte";
   import type { PageData } from "./$types";
+  import { profileData } from "$lib/data/profile";
 
   let { data }: { data: PageData } = $props();
   let project = $derived(data.project);
 </script>
 
 <svelte:head>
-  <title>{project.title} | Alex Rivers</title>
+  <title>{project.title} | {profileData.name}</title>
   <meta name="description" content={project.tagline} />
 </svelte:head>
 

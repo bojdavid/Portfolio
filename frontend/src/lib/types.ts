@@ -58,6 +58,34 @@ export interface SocialLink {
   icon: string;
 }
 
+export interface ContactChannel {
+  id: string;
+  name: string;
+  handle: string;
+  copyValue: string;
+  actionUrl: string;
+  actionLabel: string;
+  icon: string;
+  badge?: string;
+  description: string;
+}
+
+export interface PageMeta {
+  title: string;
+  description: string;
+  badge?: string;
+  heading?: string;
+  subheading?: string;
+}
+
+export interface ProfilePages {
+  home: PageMeta;
+  about: PageMeta;
+  projects: PageMeta;
+  cv: PageMeta;
+  contact: PageMeta;
+}
+
 export interface Profile {
   name: string;
   handle: string;
@@ -73,9 +101,15 @@ export interface Profile {
   email: string;
   phone: string;
   githubUrl: string;
+  cvUrl: string;
+  cvFileName: string;
   socials: SocialLink[];
   offlineInterests: OfflineInterest[];
   education: EducationItem[];
   certifications: string[];
   languagesSpoken: string[];
+  pages: ProfilePages;
+  contacts: ContactChannel[];
 }
+
+

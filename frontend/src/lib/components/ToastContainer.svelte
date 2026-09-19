@@ -3,6 +3,7 @@
   import { CheckCircle2, Info, AlertCircle, X } from 'lucide-svelte';
   import { fly } from 'svelte/transition';
   import { flip } from 'svelte/animate';
+  import { TRANSITION } from '$lib/constants/motion';
 </script>
 
 <div
@@ -11,9 +12,9 @@
 >
   {#each $toast as item (item.id)}
     <div
-      animate:flip={{ duration: 250 }}
-      in:fly={{ y: -24, x: 20, duration: 300 }}
-      out:fly={{ x: 60, opacity: 0, duration: 200 }}
+      animate:flip={TRANSITION.toastFlip}
+      in:fly={TRANSITION.toastIn}
+      out:fly={TRANSITION.toastOut}
       class="pointer-events-auto relative overflow-hidden flex items-center justify-between gap-3 p-3.5 rounded-lg bg-surface/95 border border-border shadow-2xl backdrop-blur-md hover:border-primary/60 transition-all duration-200"
       class:border-primary={item.type === 'success'}
       class:border-accent={item.type === 'info'}
