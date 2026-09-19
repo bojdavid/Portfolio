@@ -2,6 +2,7 @@
   import { profileData } from "$lib/data/profile";
   import { ArrowRight, Mail, Sparkles } from "lucide-svelte";
   import bojImg from "$lib/assets/boj.png";
+  import { typewriter } from "$lib/utils/typewriter";
 </script>
 
 <section
@@ -29,12 +30,14 @@
     <!-- Hero Titles -->
     <div class="space-y-2">
       <h1
-        class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-text"
+        use:typewriter={{ text: profileData.name, speed: 45, delay: 100 }}
+        class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-text min-h-[1.2em]"
       >
         {profileData.name}
       </h1>
       <h2
-        class="text-lg sm:text-xl md:text-2xl font-mono text-primary font-semibold"
+        use:typewriter={{ text: profileData.role, speed: 30, delay: 750, cursorColor: "primary" }}
+        class="text-lg sm:text-xl md:text-2xl font-mono text-primary font-semibold min-h-[1.3em]"
       >
         {profileData.role}
       </h2>

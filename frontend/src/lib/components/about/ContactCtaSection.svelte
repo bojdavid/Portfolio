@@ -1,12 +1,12 @@
 <script lang="ts">
   import { Mail } from 'lucide-svelte';
-  import { fly } from 'svelte/transition';
+  import { reveal } from '$lib/actions/reveal';
   import { TRANSITION } from '$lib/constants/motion';
 </script>
 
 <section class="pt-10 border-t border-border">
   <div
-    in:fly={TRANSITION.cta}
+    use:reveal={TRANSITION.cta}
     class="p-8 sm:p-10 rounded-lg bg-surface-subtle border border-border flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
   >
     <div class="space-y-2 max-w-xl">

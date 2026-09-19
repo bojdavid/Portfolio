@@ -60,6 +60,14 @@ export const TRANSITION = {
     delay: DELAY.medium + index * DELAY.staggerRelaxed
   }),
 
+  // Zigzag directional card entrance (alternating left/right slide)
+  zigzagCard: (index = 0, isLeft = true) => ({
+    x: isLeft ? -40 : 40,
+    y: 8,
+    duration: TIMING.card,
+    delay: DELAY.medium + index * DELAY.staggerRelaxed
+  }),
+
   // Subtle item entrances (e.g. badges, list items)
   item: (index = 0) => ({
     y: 12,

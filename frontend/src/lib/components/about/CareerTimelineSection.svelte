@@ -1,11 +1,11 @@
 <script lang="ts">
   import { experienceData } from '$lib/data/experience';
-  import { fly } from 'svelte/transition';
+  import { reveal } from '$lib/actions/reveal';
   import { TRANSITION } from '$lib/constants/motion';
 </script>
 
 <section class="space-y-6 pt-10 border-t border-border">
-  <div in:fly={TRANSITION.header} class="space-y-1">
+  <div use:reveal={TRANSITION.header} class="space-y-1">
     <span class="font-mono text-xs text-primary font-semibold tracking-wide">
       // CAREER LOG
     </span>
@@ -17,7 +17,7 @@
   <div class="relative pl-6 sm:pl-8 before:absolute before:left-2 sm:before:left-3 before:top-3 before:bottom-3 before:w-[2px] before:bg-border space-y-6">
     {#each experienceData as exp, i}
       <div
-        in:fly={TRANSITION.card(i)}
+        use:reveal={TRANSITION.card(i)}
         class="relative p-6 rounded-lg bg-surface border border-border hover:border-primary/60 hover:bg-surface-elevated hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 space-y-3 group cursor-default"
       >
         <!-- Connector Dot on the vertical line -->

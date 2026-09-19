@@ -7,7 +7,7 @@
 
 <a
   href={`/projects/${project.slug}`}
-  class="flex flex-col justify-between p-6 rounded-lg bg-surface border border-border hover:border-primary/60 hover:bg-surface-elevated transition-all duration-200 group h-full"
+  class="flex flex-col justify-between p-6 sm:p-7 rounded-2xl bg-surface/80 backdrop-blur-md border border-border/80 hover:border-primary/50 hover:bg-surface-elevated hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 group h-full relative overflow-hidden"
 >
   <div class="space-y-3">
     <!-- Card Header -->
