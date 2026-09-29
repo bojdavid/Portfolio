@@ -3,41 +3,61 @@
   import { Trophy, Music, Compass, Sparkles } from 'lucide-svelte';
   import { reveal } from '$lib/actions/reveal';
   import { TRANSITION } from '$lib/constants/motion';
+  import { interestConfigs, LABEL_COLORS } from '$lib/data/interestConfigs';
+  import InterestVisualCard from './InterestVisualCard.svelte';
 
-  const iconMap = {
-    Trophy,
-    Music,
-    Compass
-  };
+  const iconMap = { Trophy, Music, Compass };
+  const total = profileData.offlineInterests.length;
 </script>
 
-<section class="space-y-6 pt-10 border-t border-border">
+<section class="space-y-10 pt-10 border-t border-border">
+  <!-- Section header -->
   <div use:reveal={TRANSITION.header} class="space-y-1">
     <span class="font-mono text-xs text-primary font-semibold tracking-wide">
       // OFFLINE INTERESTS
     </span>
-    <h2 class="text-2xl sm:text-3xl font-extrabold text-text tracking-tight">
+    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-text tracking-tight">
       Beyond the computer terminal
     </h2>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+  <!-- Zigzag rows -->
+  <div class="flex flex-col gap-14 lg:gap-20">
     {#each profileData.offlineInterests as item, i}
       {@const IconComponent = iconMap[item.iconName as keyof typeof iconMap] || Sparkles}
-      <div
-        use:reveal={TRANSITION.card(i)}
-        class="p-5 rounded-lg bg-surface border border-border hover:border-accent/60 hover:-translate-y-1 hover:shadow-xl hover:shadow-accent/5 transition-all duration-300 space-y-3 group cursor-default"
-      >
-        <div class="p-2.5 rounded-md bg-surface-subtle border border-border w-fit text-accent group-hover:border-accent/40 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-          <IconComponent class="w-5 h-5" />
+      {@const cfg = interestConfigs[item.iconName] ?? interestConfigs.Trophy}
+      {@const isTextLeft = i % 2 === 0}
+      {@const labelColor = LABEL_COLORS[i] ?? 'text-primary'}
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-14 items-center">
+        <!-- Text block -->
+        <div
+          use:reveal={TRANSITION.zigzagCard(i * 2, isTextLeft)}
+          class="space-y-5 text-left {isTextLeft ? 'order-1' : 'order-1 md:order-2'}"
+        >
+          <div class="flex items-center gap-2.5 font-mono text-xs {labelColor} font-semibold">
+            <div class="p-2 rounded-md bg-surface-subtle border border-border {labelColor} shadow-sm">
+              <IconComponent class="w-4 h-4" />
+            </div>
+            <span>0{i + 1} // INTEREST</span>
+          </div>
+          <h3 class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-text tracking-tight">
+            {item.title}
+          </h3>
+          <p class="text-sm sm:text-base lg:text-lg text-text-muted leading-relaxed">
+            {item.description}
+          </p>
         </div>
-        <h3 class="font-bold text-base text-text group-hover:text-accent transition-colors duration-200">
-          {item.title}
-        </h3>
-        <p class="text-xs sm:text-sm text-text-muted leading-relaxed">
-          {item.description}
-        </p>
+
+        <!-- Visual card -->
+        <div
+          use:reveal={TRANSITION.zigzagCard(i * 2 + 1, !isTextLeft)}
+          class={isTextLeft ? 'order-2' : 'order-2 md:order-1'}
+        >
+          <InterestVisualCard {cfg} {labelColor} index={i} {total} />
+        </div>
       </div>
     {/each}
   </div>
 </section>
+

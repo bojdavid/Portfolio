@@ -31,19 +31,19 @@ export const profileData: Profile = {
     {
       title: 'Judo & Athletics',
       description:
-        'Competitive athlete & Team Captain (UI); 3x NUGA Medalist (2025) and winner of the 2024 University Championship and Inter-Faculty Open Weight titles, with second place in the -81kg division. Instills discipline, leadership, and resilience.',
+        'As a competitive athlete and Team Captain at UI, I’ve learned that every achievement starts with showing up, putting in the work, and growing together as a team. From becoming a 3x NUGA Medalist in 2025 to winning the 2024 University Championship and Inter-Faculty Open Weight titles, and finishing second in the -81kg division, each experience has shaped me into a more disciplined, resilient, and supportive leader. Beyond the medals, I enjoy bringing people together, encouraging those around me, and creating an environment where everyone can grow and give their best.',
       iconName: 'Trophy'
     },
     {
       title: 'Personal Interests',
       description:
-        'Guitar performance, thriller cinema/literature, and fine art appreciation.',
+        'I’ve always enjoyed exploring creativity in different forms. Whether it’s picking up a guitar and getting lost in a melody, getting drawn into the suspense of a good thriller, or taking time to appreciate the details and stories behind fine art, I enjoy experiences that spark curiosity, imagination, and a different way of seeing the world.',
       iconName: 'Music'
     },
     {
       title: 'Exploration',
       description:
-        'Passionate about traveling and exploring new environments to broaden perspectives.',
+        'Whether it’s planning a trip to a new city or simply trying something different close to home, I enjoy the energy of exploring new places, experiencing different cultures, and stepping outside of my comfort zone. For me, every new environment is an opportunity to learn, adapt, and bring fresh perspectives back to everything I do.',
       iconName: 'Compass'
     }
   ],
